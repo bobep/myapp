@@ -57,15 +57,11 @@ fmt:
 	@echo "+ $@"
 	@go list -f '{{if len .TestGoFiles}}"gofmt -s -l {{.Dir}}"{{end}}' $(shell go list ${PROJECT}/... | grep -v vendor) | xargs -L 1 sh -c
 
-lint:
-	@echo "+ $@"
-	@go list -f '{{if len .TestGoFiles}}"golint {{.Dir}}/..."{{end}}' $(shell go list ${PROJECT}/... | grep -v vendor) | xargs -L 1 sh -c
-
 vet:
 	@echo "+ $@"
 	@go vet $(shell go list ${PROJECT}/... | grep -v vendor)
 
-test: vendor fmt lint vet
+test: vendor fmt vet
 	@echo "+ $@"
 	@go test -v -race -tags "$(BUILDTAGS) cgo" $(shell go list ${PROJECT}/... | grep -v vendor)
 
